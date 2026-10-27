@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vignesh &amp; Vaishnavi | Royal Wedding Celebration</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            darkest: '#051A17',
+                            deep: '#0B2B26',
+                            card: '#133E37',
+                            light: '#1B524A',
+                        },
+                        gold: {
+                            light: '#F3E5AB',
+                            DEFAULT: '#D4AF37',
+                            dark: '#AA7C11',
+                            brushed: '#C5A059'
+                        },
+                        ivory: {
+                            DEFAULT: '#FDFBF7',
+                            muted: '#EAE5D9',
+                            dark: '#D5CFC0'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Royal Gold Gradients & Accent Styling */
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-gradient-bg {
+            background: linear-gradient(135deg, #D4AF37 0%, #F3E5AB 50%, #AA7C11 100%);
+        }
+
+        .gold-border {
+            border: 1px solid rgba(212, 175, 55, 0.4);
+        }
+
+        /* Glassmorphic Emerald Panels */
+        .glass-emerald {
+            background: rgba(11, 43, 38, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+        }
+
+        .glass-emerald-card {
+            background: rgba(19, 62, 55, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #051A17;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D4AF37;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #AA7C11;
+        }
+
+        /* Canvas Particle Overlay */
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Timeline Connector Line */
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            background: linear-gradient(180deg, rgba(212,175,55,0) 0%, rgba(212,175,55,0.8) 15%, rgba(212,175,55,0.8) 85%, rgba(212,175,55,0) 100%);
+            transform: translateX(-50%);
+        }
+
+        @media (max-width: 768px) {
+            .timeline-line::before {
+                left: 20px;
+            }
+        }
+
+        /* Slow Rotate Animation for Mandala Accent */
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spinSlow 40s linear infinite;
+        }
+    </style>
+</head>
+<body class="bg-emerald-darkest text-ivory font-sans antialiased overflow-x-hidden selection:bg-gold selection:text-emerald-darkest">
+
+    <!-- Ambient Golden Dust Particle Canvas -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- Glassmorphic Header Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-50 glass-emerald border-b border-gold/30 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Monogram Emblem Logo -->
+                <a href="#hero" class="flex items-center space-x-2 group">
+                    <span class="font-serif text-3xl font-bold tracking-widest gold-gradient-text transition-transform duration-300 group-hover:scale-105">V &amp; V</span>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <div class="hidden md:flex space-x-10 items-center text-xs uppercase tracking-widest font-medium">
+                    <a href="#story" class="text-ivory/80 hover:text-gold transition-colors duration-200">Our Story</a>
+                    <a href="#events" class="text-ivory/80 hover:text-gold transition-colors duration-200">Events &amp; Schedule</a>
+                    <a href="#guestbook" class="text-ivory/80 hover:text-gold transition-colors duration-200">Virtual Guestbook</a>
+                </div>
+
+                <!-- Music Control Button & Mobile Hamburger -->
+                <div class="flex items-center space-x-4 z-10">
+                    <button id="audioToggle" aria-label="Toggle Ambient Audio Melody" class="relative p-3 rounded-full border border-gold/50 text-gold hover:bg-gold/10 transition-all duration-300 flex items-center justify-center group" title="Toggle Ambient Audio">
+                        <i id="audioIcon" class="fa-solid fa-music text-sm transition-transform duration-300 group-hover:scale-110"></i>
+                        <span id="audioPulse" class="absolute -top-1 -right-1 w-3 h-3 bg-gold rounded-full animate-ping opacity-0"></span>
+                    </button>
+
+                    <button id="mobileMenuBtn" aria-label="Open Mobile Menu" class="md:hidden p-2 text-gold focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Navigation -->
+        <div id="mobileMenu" class="hidden md:hidden glass-emerald border-t border-gold/30 px-4 pt-4 pb-6 space-y-4 text-center">
+            <a href="#story" class="mobile-nav-link block text-sm uppercase tracking-widest py-2 text-ivory/90 hover:text-gold">Our Story</a>
+            <a href="#events" class="mobile-nav-link block text-sm uppercase tracking-widest py-2 text-ivory/90 hover:text-gold">Events &amp; Schedule</a>
+            <a href="#guestbook" class="mobile-nav-link block text-sm uppercase tracking-widest py-2 text-ivory/90 hover:text-gold">Virtual Guestbook</a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header id="hero" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 px-4 overflow-hidden">
+        <!-- Radial Background Gradient & Decorative Rotating Mandala Motif -->
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-emerald-deep via-emerald-darkest to-black pointer-events-none"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] opacity-10 pointer-events-none animate-spin-slow">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-full h-full fill-gold">
+                <path d="M100 0 C105 30 130 55 160 60 C130 65 105 90 100 120 C95 90 70 65 40 60 C70 55 95 30 100 0 Z" />
+                <circle cx="100" cy="60" r="40" fill="none" stroke="#D4AF37" stroke-width="1.5"/>
+                <circle cx="100" cy="60" r="55" fill="none" stroke="#D4AF37" stroke-width="0.5" stroke-dasharray="4,4"/>
+            </svg>
+        </div>
+
+        <div class="relative z-10 max-w-4xl mx-auto text-center space-y-8">
+            <!-- Header Tag line -->
+            <div class="inline-flex items-center justify-center space-x-3 text-gold tracking-[0.25em] uppercase text-xs sm:text-sm font-semibold border-y border-gold/40 py-2 px-6">
+                <i class="fa-solid fa-om text-sm"></i>
+                <span>The Auspicious Union Of</span>
+                <i class="fa-solid fa-om text-sm"></i>
+            </div>
+
+            <!-- Couple Names -->
+            <div class="space-y-3">
+                <h1 class="font-serif text-5xl sm:text-7xl md:text-8xl font-bold tracking-tight text-ivory drop-shadow-2xl">
+                    Vignesh <span class="gold-gradient-text font-serif italic font-normal">&amp;</span> Vaishnavi
+                </h1>
+                <p class="font-serif italic text-lg sm:text-2xl text-gold/90 tracking-wide">
+                    Together with their families request the pleasure of your company to celebrate their wedding
+                </p>
+            </div>
+
+            <!-- Date & Venue Highlight -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 text-xs sm:text-sm tracking-widest uppercase text-ivory/90 font-light">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-regular fa-calendar-check text-gold"></i>
+                    <span>November 14 – 16, 2026</span>
+                </div>
+                <span class="hidden sm:inline text-gold">•</span>
+                <a href="https://share.google/Fj5TLa6MyCIMNMwXd" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2 hover:text-gold transition-colors">
+                    <i class="fa-solid fa-location-dot text-gold"></i>
+                    <span>Grand Wedding Venue</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] ml-1"></i>
+                </a>
+            </div>
+
+            <!-- LIVE COUNTDOWN TIMER (4-CARD) -->
+            <div class="pt-4">
+                <p class="text-xs uppercase tracking-[0.3em] text-gold/80 mb-6 font-semibold">Counting Down To November 14, 2026</p>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
+                    <!-- Days -->
+                    <div class="glass-emerald-card p-4 rounded-2xl text-center border border-gold/40 shadow-2xl transition-transform hover:-translate-y-1">
+                        <span id="cd-days" class="block font-serif text-4xl sm:text-5xl font-bold gold-gradient-text">00</span>
+                        <span class="text-[10px] sm:text-xs uppercase tracking-widest text-ivory/70 mt-1 block">Days</span>
+                    </div>
+                    <!-- Hours -->
+                    <div class="glass-emerald-card p-4 rounded-2xl text-center border border-gold/40 shadow-2xl transition-transform hover:-translate-y-1">
+                        <span id="cd-hours" class="block font-serif text-4xl sm:text-5xl font-bold gold-gradient-text">00</span>
+                        <span class="text-[10px] sm:text-xs uppercase tracking-widest text-ivory/70 mt-1 block">Hours</span>
+                    </div>
+                    <!-- Minutes -->
+                    <div class="glass-emerald-card p-4 rounded-2xl text-center border border-gold/40 shadow-2xl transition-transform hover:-translate-y-1">
+                        <span id="cd-minutes" class="block font-serif text-4xl sm:text-5xl font-bold gold-gradient-text">00</span>
+                        <span class="text-[10px] sm:text-xs uppercase tracking-widest text-ivory/70 mt-1 block">Minutes</span>
+                    </div>
+                    <!-- Seconds -->
+                    <div class="glass-emerald-card p-4 rounded-2xl text-center border border-gold/40 shadow-2xl transition-transform hover:-translate-y-1">
+                        <span id="cd-seconds" class="block font-serif text-4xl sm:text-5xl font-bold gold-gradient-text">00</span>
+                        <span class="text-[10px] sm:text-xs uppercase tracking-widest text-ivory/70 mt-1 block">Seconds</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Action Buttons -->
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#events" class="w-full sm:w-auto px-8 py-4 gold-gradient-bg text-emerald-darkest font-bold text-xs uppercase tracking-widest rounded-full shadow-xl hover:brightness-110 transition-all duration-300 transform hover:-translate-y-0.5">
+                    View Complete Itinerary
+                </a>
+                <a href="#guestbook" class="w-full sm:w-auto px-8 py-4 border border-gold text-gold font-semibold text-xs uppercase tracking-widest rounded-full hover:bg-gold/10 transition-all duration-300">
+                    Share Your Blessings
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- OUR STORY SECTION -->
+    <section id="story" class="py-24 px-4 bg-emerald-deep relative">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center space-y-3 mb-16">
+                <span class="text-gold text-xs uppercase tracking-[0.3em] font-semibold">Two Souls, One Destiny</span>
+                <h2 class="font-serif text-4xl sm:text-5xl font-bold text-ivory">Our Love Story &amp; Journey</h2>
+                <div class="w-20 h-0.5 bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mt-4"></div>
+            </div>
+
+            <!-- Vertical Interactive Timeline -->
+            <div class="relative timeline-line space-y-12">
+                <!-- Milestone 1 -->
+                <div class="relative flex flex-col md:flex-row items-center group reveal-on-scroll">
+                    <div class="md:w-1/2 md:pr-12 text-center md:text-right mb-6 md:mb-0">
+                        <span class="text-gold font-serif text-xl font-bold">How We Met</span>
+                        <h3 class="font-serif text-2xl font-bold text-ivory mt-1">A Harmonious Beginning</h3>
+                        <p class="text-ivory/70 text-sm leading-relaxed mt-2 font-light">
+                            Introduced through family traditions, Vignesh &amp; Vaishnavi first connected over coffee. What started as a modest initial conversation turned into hours of shared laughter, values, and mutual respect.
+                        </p>
+                    </div>
+                    <div class="absolute left-1/2 -translate-x-1/2 w-10 h-10 rounded-full gold-gradient-bg flex items-center justify-center text-emerald-darkest shadow-xl z-10">
+                        <i class="fa-solid fa-hands-praying text-xs"></i>
+                    </div>
+                    <div class="md:w-1/2 md:pl-12 hidden md:block">
+                        <div class="p-6 glass-emerald-card rounded-2xl border border-gold/40 shadow-2xl transition-transform duration-500 group-hover:scale-105">
+                            <i class="fa-solid fa-mug-hot text-3xl text-gold mb-3"></i>
+                            <h4 class="font-serif text-lg font-bold text-ivory">The First Coffee</h4>
+                            <p class="text-xs text-ivory/70 mt-1">Where conversations sparked an everlasting connection.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Milestone 2 -->
+                <div class="relative flex flex-col md:flex-row-reverse items-center group reveal-on-scroll">
+                    <div class="md:w-1/2 md:pl-12 text-center md:text-left mb-6 md:mb-0">
+                        <span class="text-gold font-serif text-xl font-bold">The Journey</span>
+                        <h3 class="font-serif text-2xl font-bold text-ivory mt-1">A Promise Of Forever</h3>
+                        <p class="text-ivory/70 text-sm leading-relaxed mt-2 font-light">
+                            Surrounded by glowing diyas, soft melodies, and deep reverence, their bond grew stronger through every passing season, leading gracefully toward marriage.
+                        </p>
+                    </div>
+                    <div class="absolute left-1/2 -translate-x-1/2 w-10 h-10 rounded-full gold-gradient-bg flex items-center justify-center text-emerald-darkest shadow-xl z-10">
+                        <i class="fa-solid fa-ring text-xs"></i>
+                    </div>
+                    <div class="md:w-1/2 md:pr-12 hidden md:block">
+                        <div class="p-6 glass-emerald-card rounded-2xl border border-gold/40 shadow-2xl transition-transform duration-500 group-hover:scale-105">
+                            <i class="fa-solid fa-gem text-3xl text-gold mb-3"></i>
+                            <h4 class="font-serif text-lg font-bold text-ivory">The Engagement</h4>
+                            <p class="text-xs text-ivory/70 mt-1">Sealing our vows in the presence of beloved families.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Milestone 3 -->
+                <div class="relative flex flex-col md:flex-row items-center group reveal-on-scroll">
+                    <div class="md:w-1/2 md:pr-12 text-center md:text-right mb-6 md:mb-0">
+                        <span class="text-gold font-serif text-xl font-bold">Sacred Union</span>
+                        <h3 class="font-serif text-2xl font-bold text-ivory mt-1">Beginning Of Forever</h3>
+                        <p class="text-ivory/70 text-sm leading-relaxed mt-2 font-light">
+                            Now, in November 2026, we prepare to take seven sacred steps together, seeking divine blessings and the love of our family and friends.
+                        </p>
+                    </div>
+                    <div class="absolute left-1/2 -translate-x-1/2 w-10 h-10 rounded-full gold-gradient-bg flex items-center justify-center text-emerald-darkest shadow-xl z-10">
+                        <i class="fa-solid fa-heart text-xs"></i>
+                    </div>
+                    <div class="md:w-1/2 md:pl-12 hidden md:block">
+                        <div class="p-6 glass-emerald-card rounded-2xl border border-gold/40 shadow-2xl transition-transform duration-500 group-hover:scale-105">
+                            <i class="fa-solid fa-sun text-3xl text-gold mb-3"></i>
+                            <h4 class="font-serif text-lg font-bold text-ivory">The Wedding Vows</h4>
+                            <p class="text-xs text-ivory/70 mt-1">A lifetime of love, harmony, and togetherness.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EVENTS & SCHEDULE SECTION -->
+    <section id="events" class="py-24 px-4 bg-emerald-darkest relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center space-y-3 mb-16">
+                <span class="text-gold text-xs uppercase tracking-[0.3em] font-semibold">Celebration Itinerary</span>
+                <h2 class="font-serif text-4xl sm:text-5xl font-bold text-ivory">Events &amp; Schedule</h2>
+                <div class="w-20 h-0.5 bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mt-4"></div>
+            </div>
+
+            <!-- 3 Event Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Event 1: Nov 14 -->
+                <div class="glass-emerald-card p-8 rounded-3xl border border-gold/40 flex flex-col justify-between hover:border-gold transition-all duration-300 transform hover:-translate-y-2 group shadow-2xl">
+                    <div class="space-y-4">
+                        <div class="w-14 h-14 rounded-full border border-gold/50 flex items-center justify-center text-gold text-2xl mb-6 group-hover:bg-gold group-hover:text-emerald-darkest transition-colors duration-300">
+                            <i class="fa-solid fa-champagne-glasses"></i>
+                        </div>
+                        <span class="text-xs uppercase tracking-widest text-gold font-bold">Saturday, Nov 14, 2026</span>
+                        <h3 class="font-serif text-2xl font-bold text-ivory">Welcome &amp; Evening Reception</h3>
+                        <p class="text-ivory/80 text-xs leading-relaxed font-light">
+                            An enchanting evening filled with music, exquisite multi-cuisine delicacies, and warm greetings as we welcome our guests.
+                        </p>
+                        <div class="pt-4 border-t border-gold/20 space-y-2 text-xs text-ivory/90">
+                            <p><strong class="text-gold font-medium">Timing:</strong> 6:00 PM Onwards</p>
+                            <p><strong class="text-gold font-medium">Dress Code:</strong> Indo-Western / Traditional Festive</p>
+                            <p><strong class="text-gold font-medium">Feast:</strong> Gala Dinner</p>
+                        </div>
+                    </div>
+                    <div class="mt-8 pt-4 flex flex-col gap-3">
+                        <button onclick="downloadICS('Vignesh & Vaishnavi - Welcome Reception', 'Welcome Reception for Vignesh and Vaishnavi Wedding', 'Grand Wedding Venue', '2026-11-14T18:00:00', '2026-11-14T22:00:00')" class="w-full py-2.5 border border-gold/50 text-gold text-xs uppercase tracking-widest rounded-xl hover:bg-gold/10 transition-colors duration-200 font-medium">
+                            <i class="fa-regular fa-calendar-plus mr-2"></i>Add To Calendar
+                        </button>
+                        <a href="https://share.google/Fj5TLa6MyCIMNMwXd" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 bg-gold/20 text-ivory text-center text-xs uppercase tracking-widest rounded-xl hover:bg-gold/30 transition-colors duration-200 font-medium">
+                            <i class="fa-solid fa-map-location-dot mr-2 text-gold"></i>Open In Google Maps
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Event 2: Nov 15 (Main Event) -->
+                <div class="glass-emerald-card p-8 rounded-3xl border-2 border-gold flex flex-col justify-between hover:border-gold transition-all duration-300 transform hover:-translate-y-2 group shadow-2xl relative overflow-hidden">
+                    <div class="absolute top-4 right-4 bg-gold text-emerald-darkest text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-md">
+                        Main Ceremony
+                    </div>
+                    <div class="space-y-4">
+                        <div class="w-14 h-14 rounded-full border border-gold/50 flex items-center justify-center text-gold text-2xl mb-6 group-hover:bg-gold group-hover:text-emerald-darkest transition-colors duration-300">
+                            <i class="fa-solid fa-om"></i>
+                        </div>
+                        <span class="text-xs uppercase tracking-widest text-gold font-bold">Sunday, Nov 15, 2026</span>
+                        <h3 class="font-serif text-2xl font-bold text-ivory">Auspicious Muhurtham</h3>
+                        <p class="text-ivory/80 text-xs leading-relaxed font-light">
+                            The sacred wedding ceremony featuring Vedic rites, Mangalya Dharanam, and Saptapadi as Vignesh &amp; Vaishnavi unite in marriage.
+                        </p>
+                        <div class="pt-4 border-t border-gold/20 space-y-2 text-xs text-ivory/90">
+                            <p><strong class="text-gold font-medium">Timing:</strong> 6:00 AM - 9:00 AM (Muhurtham)</p>
+                            <p><strong class="text-gold font-medium">Dress Code:</strong> Traditional Silk Sarees &amp; Veshti</p>
+                            <p><strong class="text-gold font-medium">Feast:</strong> Traditional South Indian Breakfast</p>
+                        </div>
+                    </div>
+                    <div class="mt-8 pt-4 flex flex-col gap-3">
+                        <button onclick="downloadICS('Vignesh & Vaishnavi - Auspicious Muhurtham', 'Auspicious Muhurtham Wedding Ceremony for Vignesh & Vaishnavi', 'Grand Wedding Venue', '2026-11-15T06:00:00', '2026-11-15T12:00:00')" class="w-full py-2.5 gold-gradient-bg text-emerald-darkest font-bold text-xs uppercase tracking-widest rounded-xl hover:brightness-110 transition-colors duration-200">
+                            <i class="fa-regular fa-calendar-plus mr-2"></i>Add To Calendar
+                        </button>
+                        <a href="https://share.google/Fj5TLa6MyCIMNMwXd" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 bg-gold/20 text-ivory text-center text-xs uppercase tracking-widest rounded-xl hover:bg-gold/30 transition-colors duration-200 font-medium">
+                            <i class="fa-solid fa-map-location-dot mr-2 text-gold"></i>Open In Google Maps
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Event 3: Nov 16 -->
+                <div class="glass-emerald-card p-8 rounded-3xl border border-gold/40 flex flex-col justify-between hover:border-gold transition-all duration-300 transform hover:-translate-y-2 group shadow-2xl">
+                    <div class="space-y-4">
+                        <div class="w-14 h-14 rounded-full border border-gold/50 flex items-center justify-center text-gold text-2xl mb-6 group-hover:bg-gold group-hover:text-emerald-darkest transition-colors duration-300">
+                            <i class="fa-solid fa-glass-water"></i>
+                        </div>
+                        <span class="text-xs uppercase tracking-widest text-gold font-bold">Monday, Nov 16, 2026</span>
+                        <h3 class="font-serif text-2xl font-bold text-ivory">Grand Reception</h3>
+                        <p class="text-ivory/80 text-xs leading-relaxed font-light">
+                            A grand evening dinner and celebration to conclude our wedding festivities with joyous music, family blessings, and memorable moments.
+                        </p>
+                        <div class="pt-4 border-t border-gold/20 space-y-2 text-xs text-ivory/90">
+                            <p><strong class="text-gold font-medium">Timing:</strong> 6:30 PM Onwards</p>
+                            <p><strong class="text-gold font-medium">Dress Code:</strong> Royal Formal / Festive Splendor</p>
+                            <p><strong class="text-gold font-medium">Feast:</strong> Grand Celebration Dinner</p>
+                        </div>
+                    </div>
+                    <div class="mt-8 pt-4 flex flex-col gap-3">
+                        <button onclick="downloadICS('Vignesh & Vaishnavi - Grand Reception', 'Grand Reception Celebration for Vignesh and Vaishnavi', 'Grand Reception Venue', '2026-11-16T18:30:00', '2026-11-16T22:30:00')" class="w-full py-2.5 border border-gold/50 text-gold text-xs uppercase tracking-widest rounded-xl hover:bg-gold/10 transition-colors duration-200 font-medium">
+                            <i class="fa-regular fa-calendar-plus mr-2"></i>Add To Calendar
+                        </button>
+                        <a href="https://maps.app.goo.gl/HA4yHgLmz76GYXrS9" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 bg-gold/20 text-ivory text-center text-xs uppercase tracking-widest rounded-xl hover:bg-gold/30 transition-colors duration-200 font-medium">
+                            <i class="fa-solid fa-map-location-dot mr-2 text-gold"></i>Open In Google Maps
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- VIRTUAL GUESTBOOK SECTION -->
+    <section id="guestbook" class="py-24 px-4 bg-emerald-deep relative">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center space-y-3 mb-16">
+                <span class="text-gold text-xs uppercase tracking-[0.3em] font-semibold">Warm Wishes &amp; Blessings</span>
+                <h2 class="font-serif text-4xl sm:text-5xl font-bold text-ivory">Virtual Guestbook</h2>
+                <div class="w-20 h-0.5 bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mt-4"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                <!-- Form -->
+                <div class="lg:col-span-5">
+                    <form id="guestbookForm" class="glass-emerald-card p-6 sm:p-8 rounded-3xl border border-gold/40 space-y-4 shadow-2xl">
+                        <h3 class="font-serif text-2xl font-bold text-gold">Leave Your Blessings</h3>
+                        <div>
+                            <label for="gbName" class="block text-xs uppercase tracking-widest text-ivory/70 mb-1">Your Name *</label>
+                            <input type="text" id="gbName" required placeholder="e.g. Ramesh &amp; Family" class="w-full px-4 py-2.5 rounded-xl bg-emerald-darkest border border-gold/30 text-ivory focus:outline-none focus:border-gold text-xs sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="gbRelation" class="block text-xs uppercase tracking-widest text-ivory/70 mb-1">Relationship</label>
+                            <input type="text" id="gbRelation" placeholder="e.g. Friend / Cousin" class="w-full px-4 py-2.5 rounded-xl bg-emerald-darkest border border-gold/30 text-ivory focus:outline-none focus:border-gold text-xs sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="gbWish" class="block text-xs uppercase tracking-widest text-ivory/70 mb-1">Your Blessing *</label>
+                            <textarea id="gbWish" rows="4" required placeholder="May Vignesh and Vaishnavi be blessed with a lifetime of happiness, health, and togetherness..." class="w-full px-4 py-2.5 rounded-xl bg-emerald-darkest border border-gold/30 text-ivory focus:outline-none focus:border-gold text-xs sm:text-sm"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-3 gold-gradient-bg text-emerald-darkest font-bold text-xs uppercase tracking-widest rounded-xl shadow-md hover:brightness-110 transition-all">
+                            Post Blessing
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Dynamic Wishes Wall -->
+                <div class="lg:col-span-7">
+                    <div id="wishesWall" class="space-y-4 max-h-[500px] overflow-y-auto pr-2">
+                        <!-- Rendered Wishes -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-emerald-darkest border-t border-gold/30 py-12 px-4 text-center space-y-6">
+        <div class="max-w-4xl mx-auto space-y-4">
+            <h3 class="font-serif text-4xl font-bold gold-gradient-text tracking-widest">V &amp; V</h3>
+            <p class="font-serif italic text-base sm:text-lg text-ivory/80">
+                We look forward to celebrating with you! <span class="text-gold font-sans font-semibold text-sm block sm:inline mt-1 sm:mt-0">#VigneshWedsVaishnavi</span>
+            </p>
+            <p class="text-[11px] text-ivory/40 uppercase tracking-widest pt-4">&copy; 2026 Vignesh &amp; Vaishnavi Wedding Celebration. All Rights Reserved.</p>
+        </div>
+
+        <a href="#hero" aria-label="Back to Top" class="inline-flex items-center justify-center w-10 h-10 rounded-full border border-gold/50 text-gold hover:bg-gold hover:text-emerald-darkest transition-all duration-300">
+            <i class="fa-solid fa-arrow-up text-sm"></i>
+        </a>
+    </footer>
+
+
+    <!-- JAVASCRIPT ENGINE -->
+    <script>
+        // --- 1. CANVAS ENGINE: FLOATING GOLD DUST & SPARKLES ---
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2.5 + 0.8;
+                this.alpha = Math.random() * 0.6 + 0.3;
+                this.speedY = Math.random() * 0.5 + 0.2;
+                this.speedX = Math.sin(Math.random() * Math.PI) * 0.3;
+                this.pulseSpeed = Math.random() * 0.02 + 0.005;
+            }
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                this.alpha += Math.sin(Date.now() * this.pulseSpeed) * 0.01;
+                
+                if (this.y > canvas.height) this.y = -10;
+                if (this.x < 0 || this.x > canvas.width) this.x = Math.random() * canvas.width;
+            }
+            draw() {
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(212, 175, 55, ${Math.abs(this.alpha)})`;
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = '#D4AF37';
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < 75; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
+
+
+        // --- 2. LIVE COUNTDOWN TIMER (TARGET: NOV 14, 2026) ---
+        const targetDate = new Date('November 14, 2026 18:30:00').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('cd-days').innerText = String(days).padStart(2, '0');
+                document.getElementById('cd-hours').innerText = String(hours).padStart(2, '0');
+                document.getElementById('cd-minutes').innerText = String(minutes).padStart(2, '0');
+                document.getElementById('cd-seconds').innerText = String(seconds).padStart(2, '0');
+            }
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+
+        // --- 3. WEB AUDIO SYNTHESIZER (HARP / CELESTE MELODY) ---
+        let audioCtx = null;
+        let isPlaying = false;
+        let melodyTimer = null;
+
+        const audioToggle = document.getElementById('audioToggle');
+        const audioIcon = document.getElementById('audioIcon');
+        const audioPulse = document.getElementById('audioPulse');
+
+        const scaleNotes = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25];
+        let noteStep = 0;
+
+        function playSynthNote(freq, time) {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, time);
+
+            gain.gain.setValueAtTime(0.0001, time);
+            gain.gain.exponentialRampToValueAtTime(0.15, time + 0.05);
+            gain.gain.exponentialRampToValueAtTime(0.0001, time + 2.5);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start(time);
+            osc.stop(time + 2.6);
+        }
+
+        function playMelodyLoop() {
+            if (!isPlaying) return;
+            const now = audioCtx.currentTime;
+            const freq = scaleNotes[noteStep % scaleNotes.length];
+            playSynthNote(freq, now);
+
+            if (Math.random() > 0.4) {
+                const harmony = scaleNotes[(noteStep + 3) % scaleNotes.length];
+                playSynthNote(harmony, now + 0.2);
+            }
+
+            noteStep = (noteStep + Math.floor(Math.random() * 3 + 1)) % scaleNotes.length;
+            melodyTimer = setTimeout(playMelodyLoop, 900 + Math.random() * 500);
+        }
+
+        audioToggle.addEventListener('click', () => {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            isPlaying = !isPlaying;
+
+            if (isPlaying) {
+                audioIcon.className = 'fa-solid fa-volume-high text-sm text-gold';
+                audioPulse.classList.remove('opacity-0');
+                playMelodyLoop();
+            } else {
+                audioIcon.className = 'fa-solid fa-music text-sm text-gold';
+                audioPulse.classList.add('opacity-0');
+                clearTimeout(melodyTimer);
+            }
+        });
+
+
+        // --- 4. VIRTUAL GUESTBOOK (LOCALSTORAGE) ---
+        const defaultWishes = [
+            { name: "Srinivasan & Family", relation: "Family Blessing", wish: "May your married life be filled with everlasting happiness, good health, and abundant prosperity! Best wishes to Vignesh & Vaishnavi!" },
+            { name: "Ananya & Karthik", relation: "Friends", wish: "So excited for Vignesh and Vaishnavi! Wishing you both an incredible journey together!" },
+            { name: "Dr. K. V. Sundaram", relation: "Elder Blessing", wish: "Wishing the young couple a blessed, divine, and joyous marital life." }
+        ];
+
+        function getStoredWishes() {
+            const raw = localStorage.getItem('vv_wedding_emerald_wishes');
+            return raw ? JSON.parse(raw) : defaultWishes;
+        }
+
+        function renderWishes() {
+            const container = document.getElementById('wishesWall');
+            const wishes = getStoredWishes();
+            container.innerHTML = wishes.map(w => `
+                <div class="glass-emerald-card p-5 rounded-2xl border border-gold/30 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-serif font-bold text-gold text-base">${escapeHtml(w.name)}</h4>
+                        <span class="text-[10px] uppercase tracking-widest text-ivory/50">${escapeHtml(w.relation || 'Guest')}</span>
+                    </div>
+                    <p class="text-ivory/80 text-xs italic leading-relaxed">"${escapeHtml(w.wish)}"</p>
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[m]);
+        }
+
+        document.getElementById('guestbookForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('gbName').value;
+            const relation = document.getElementById('gbRelation').value;
+            const wish = document.getElementById('gbWish').value;
+
+            const list = getStoredWishes();
+            list.unshift({ name, relation, wish });
+            localStorage.setItem('vv_wedding_emerald_wishes', JSON.stringify(list));
+            renderWishes();
+            e.target.reset();
+        });
+
+        renderWishes();
+
+
+        // --- 5. DYNAMIC ICS CALENDAR FILE GENERATOR ---
+        function downloadICS(title, description, location, startISO, endISO) {
+            const fmt = (s) => s.replace(/[-:]/g, '');
+            const ics = 
+`BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Vignesh Vaishnavi Wedding//EN
+BEGIN:VEVENT
+SUMMARY:${title}
+DESCRIPTION:${description}
+LOCATION:${location}
+DTSTART:${fmt(startISO)}
+DTEND:${fmt(endISO)}
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR`;
+
+            const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.setAttribute('download', `${title.replace(/\s+/g, '_')}.ics`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+
+        // --- 6. MOBILE NAVIGATION DRAWER ---
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        document.querySelectorAll('.mobile-nav-link').forEach(l => {
+            l.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+
+
+        // --- 7. SCROLL REVEAL OBSERVER ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-8');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+            el.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-8');
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
